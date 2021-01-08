@@ -1,0 +1,81 @@
+version: "3.8"
+
+networks:
+  web:
+    external: true
+  internal:
+    external: false
+
+services:
+  
+  traefik:
+    build:
+      context: "./Dockerfiles/traefik/"
+      dockerfile: "Dockerfile"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./Dockerfiles/traefik/traefik.toml:/traefik.toml:ro
+      - ./Dockerfiles/traefik/traefik_dynamic.toml:/traefik_dynamic.toml
+
+    networks: 
+      - web
+    container_name: traefik
+  nginx:
+    build:
+      context: "./Dockerfiles/nginx/"
+      dockerfile: "Dockerfile"
+    labels:
+      - traefik.http.routers.nginx.rule=Host(`blog.yungen.studio`,`app.yungen.studio`)
+      - traefik.http.routers.nginx.tls=true
+      - traefik.http.routers.nginx.tls.certresolver=lets-encrypt
+      - traefik.http.services.nginx.loadbalancer.server.port=80
+      - traefik.http.middlewares.gzip.compress=true
+      - traefik.http.routers.nginx.middlewares=gzip
+    networks:
+      - internal
+      - web
+    volumes:
+      - ./blog.yungen.studio:/var/www/blog.yungen.studio
+      - ./app.yungen.studio:/var/www/app.yungen.studio
+      - ./nginxlog/:/var/log/nginx/
+
+    container_name: nginx
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    command: -H unix:///var/run/docker.sock
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    labels:
+    # Frontend
+      - traefik.http.routers.frontend.rule=Host(`portainer.yungen.studio`)
+      - traefik.http.services.frontend.loadbalancer.server.port=9000
+      - traefik.http.routers.frontend.service=frontend
+      - traefik.http.routers.frontend.tls.certresolver=lets-encrypt
+
+      # Edge
+      - traefik.http.routers.edge.rule=Host(`edge.yungen.studio`)
+      - traefik.http.services.edge.loadbalancer.server.port=8000
+      - traefik.http.routers.edge.service=edge
+      - traefik.http.routers.edge.tls.certresolver=lets-encrypt
+    networks:
+      - internal
+      - web
+  php:
+    build:
+      context: "./Dockerfiles/php/"
+      dockerfile: "Dockerfile"
+    container_name: php
+    networks:
+      - internal
+    volumes:
+      - ./blog.yungen.studio:/var/www/blog.yungen.studio
+      - ./app.yungen.studio:/var/www/app.yungen.studio
+    labels:
+      - traefik.enable=false
+volumes:
+  portainer_data:

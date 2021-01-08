@@ -1,0 +1,13 @@
+[http.middlewares.simpleAuth.basicAuth]
+  users = [
+    "admin:$apr1$/aLtrVMz$Pmuhm6B3z/3VliBV2ycLy0"
+  ]
+[http.routers.api]
+  rule = "Host(`monitor.yungen.studio`)"
+  entrypoints = ["websecure"]
+  middlewares = ["simpleAuth"]
+  service = "api@internal"
+  [http.routers.api.tls]
+    certResolver = "lets-encrypt"
+[http.middlewares]
+  [http.middlewares.gzip.compress]
