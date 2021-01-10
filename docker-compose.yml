@@ -24,9 +24,7 @@ services:
       - web
     container_name: traefik
   nginx:
-    build:
-      context: "./Dockerfiles/nginx/"
-      dockerfile: "Dockerfile"
+    image: nginx:alpine
     labels:
       - traefik.http.routers.nginx.rule=Host(`blog.yungen.studio`,`code.yungen.studio`)
       - traefik.http.routers.nginx.tls=true
@@ -38,6 +36,9 @@ services:
       - internal  #確認跟php在同一個網路裡
       - web
     volumes:
+      - ./Dockerfiles/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./Dockerfiles/nginx/nginxconfig.io:/etc/nginx/nginxconfig.io
+      - ./Dockerfiles/nginx/sites-enabled:/etc/nginx/sites-enabled
       - ./blog.yungen.studio:/var/www/blog.yungen.studio  #確認路徑與php的一樣
       - ./code.yungen.studio:/var/www/code.yungen.studio
       - ./nginxlog/:/var/log/nginx/
