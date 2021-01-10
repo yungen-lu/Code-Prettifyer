@@ -35,10 +35,10 @@ services:
       - traefik.http.middlewares.gzip.compress=true
       - traefik.http.routers.nginx.middlewares=gzip
     networks:
-      - internal
+      - internal  #確認跟php在同一個網路裡
       - web
     volumes:
-      - ./blog.yungen.studio:/var/www/blog.yungen.studio
+      - ./blog.yungen.studio:/var/www/blog.yungen.studio  #確認路徑與php的一樣
       - ./app.yungen.studio:/var/www/app.yungen.studio
       - ./nginxlog/:/var/log/nginx/
 
@@ -71,10 +71,10 @@ services:
       dockerfile: "Dockerfile"
     container_name: php
     networks:
-      - internal
+      - internal  #確認跟nginx在同一個網路裡
     volumes:
       - ./blog.yungen.studio:/var/www/blog.yungen.studio
-      - ./app.yungen.studio:/var/www/app.yungen.studio
+      - ./app.yungen.studio:/var/www/app.yungen.studio  #確認路徑與nginx的一樣
     labels:
       - traefik.enable=false
 volumes:

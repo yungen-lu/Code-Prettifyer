@@ -59,13 +59,13 @@ int main() {
                 if (g == 3) {  //對第三個Group進行處理（錯誤類別）轉換為toastr模組能參數
                     replaceInfo(sourceCopy + groupArray[g].rm_so);
                 }
-                printf("%s#", sourceCopy + groupArray[g].rm_so);  // sourceCopy 位址上groupArray[g].rm_so（開始位址）
+                printf("%s#", sourceCopy + groupArray[g].rm_so);  // sourceCopy 位址加上groupArray[g].rm_so（開始位址）等於第g個Group的字串起始位址
             }
             printf("?");
         }
     }
-    if ((checkCnt == 0) && (lineCnt == 0)) {
+    if ((checkCnt == 0) && (lineCnt == 0)) { //如果沒有錯誤的話輸出此行
         printf("success# #?");
     }
-    regfree(&regexCompile);
+    regfree(&regexCompile); //清空 regexCompile的内容
 }
