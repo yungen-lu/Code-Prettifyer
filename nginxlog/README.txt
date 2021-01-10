@@ -1,1 +1,1 @@
-This directory if for logging
+This directory is for logging

@@ -28,7 +28,7 @@ services:
       context: "./Dockerfiles/nginx/"
       dockerfile: "Dockerfile"
     labels:
-      - traefik.http.routers.nginx.rule=Host(`blog.yungen.studio`,`app.yungen.studio`)
+      - traefik.http.routers.nginx.rule=Host(`blog.yungen.studio`,`code.yungen.studio`)
       - traefik.http.routers.nginx.tls=true
       - traefik.http.routers.nginx.tls.certresolver=lets-encrypt
       - traefik.http.services.nginx.loadbalancer.server.port=80
@@ -39,7 +39,7 @@ services:
       - web
     volumes:
       - ./blog.yungen.studio:/var/www/blog.yungen.studio  #確認路徑與php的一樣
-      - ./app.yungen.studio:/var/www/app.yungen.studio
+      - ./code.yungen.studio:/var/www/code.yungen.studio
       - ./nginxlog/:/var/log/nginx/
 
     container_name: nginx
@@ -52,16 +52,10 @@ services:
       - portainer_data:/data
     labels:
     # Frontend
-      - traefik.http.routers.frontend.rule=Host(`portainer.yungen.studio`)
+      - traefik.http.routers.frontend.rule=Host(`portainer-code.yungen.studio`)
       - traefik.http.services.frontend.loadbalancer.server.port=9000
       - traefik.http.routers.frontend.service=frontend
       - traefik.http.routers.frontend.tls.certresolver=lets-encrypt
-
-      # Edge
-      - traefik.http.routers.edge.rule=Host(`edge.yungen.studio`)
-      - traefik.http.services.edge.loadbalancer.server.port=8000
-      - traefik.http.routers.edge.service=edge
-      - traefik.http.routers.edge.tls.certresolver=lets-encrypt
     networks:
       - internal
       - web
@@ -74,7 +68,7 @@ services:
       - internal  #確認跟nginx在同一個網路裡
     volumes:
       - ./blog.yungen.studio:/var/www/blog.yungen.studio
-      - ./app.yungen.studio:/var/www/app.yungen.studio  #確認路徑與nginx的一樣
+      - ./code.yungen.studio:/var/www/code.yungen.studio  #確認路徑與nginx的一樣
     labels:
       - traefik.enable=false
 volumes:
