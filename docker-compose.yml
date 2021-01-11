@@ -26,7 +26,7 @@ services:
   nginx:
     image: nginx:alpine
     labels:
-      - traefik.http.routers.nginx.rule=Host(`code.yungen.studio`)
+      - traefik.http.routers.nginx.rule=Host(`blog.yungen.studio`,`code.yungen.studio`)
       - traefik.http.routers.nginx.tls=true
       - traefik.http.routers.nginx.tls.certresolver=lets-encrypt
       - traefik.http.services.nginx.loadbalancer.server.port=80
@@ -40,6 +40,7 @@ services:
       - ./Dockerfiles/nginx/nginxconfig.io:/etc/nginx/nginxconfig.io
       - ./Dockerfiles/nginx/sites-enabled:/etc/nginx/sites-enabled
       - ./code.yungen.studio:/var/www/code.yungen.studio  #確認路徑與php的一樣
+      - ./blog.yungen.studio:/var/www/blog.yungen.studio
       - ./nginxlog/:/var/log/nginx/
 
     container_name: nginx
@@ -68,6 +69,7 @@ services:
       - internal  #確認跟nginx在同一個網路裡
     volumes:
       - ./code.yungen.studio:/var/www/code.yungen.studio  #確認路徑與nginx的一樣
+      - ./blog.yungen.studio:/var/www/blog.yungen.studio
     labels:
       - traefik.enable=false
 volumes:
