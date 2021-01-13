@@ -2,32 +2,9 @@
 #include <stdio.h>
 #include <string.h>
 
-int removeline(char* string) {
-    if (strncmp(string, "Checking", 8) == 0) {
-        return 1;
-    }
-    return 0;
-}
-void rmln(char* string) {
-    char* ptr = strchr(string, '\n');
-    if (ptr) {
-        *ptr = '\0';
-    }
-}
-void replaceInfo(char* string) {
-    if (strcmp(string, "style") == 0) {
-        strcpy(string, "info");
-    }
-    if (strcmp(string, "performance") == 0) {
-        strcpy(string, "info");
-    }
-    if (strcmp(string, "portability") == 0) {
-        strcpy(string, "info");
-    }
-    if (strcmp(string, "information") == 0) {
-        strcpy(string, "info");
-    }
-}
+int removeLine(char* string);
+void removeNewline(char* string);
+void replaceInfo(char* string);
 int main() {
     char input[1024];
     regex_t regexCompile;
@@ -42,10 +19,10 @@ int main() {
     }
 
     while (fgets(input, sizeof(char) * 1024, stdin) != NULL) {
-        if (removeline(input) == 1) {
+        if (removeLine(input) == 1) {
             continue;
         }
-        rmln(input);
+        removeNewline(input);
         lineCnt++;
         if (regexec(&regexCompile, input, groupCnt, groupArray, 0) == 0) {  //對input進行匹配
             checkCnt++;
@@ -68,4 +45,30 @@ int main() {
         printf("success# #?");
     }
     regfree(&regexCompile); //清空 regexCompile的内容
+}
+int removeLine(char* string) {
+    if (strncmp(string, "Checking", 8) == 0) {
+        return 1;
+    }
+    return 0;
+}
+void removeNewline(char* string) {
+    char* ptr = strchr(string, '\n');
+    if (ptr) {
+        *ptr = '\0';
+    }
+}
+void replaceInfo(char* string) {
+    if (strcmp(string, "style") == 0) {
+        strcpy(string, "info");
+    }
+    if (strcmp(string, "performance") == 0) {
+        strcpy(string, "info");
+    }
+    if (strcmp(string, "portability") == 0) {
+        strcpy(string, "info");
+    }
+    if (strcmp(string, "information") == 0) {
+        strcpy(string, "info");
+    }
 }
