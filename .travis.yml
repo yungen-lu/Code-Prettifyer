@@ -1,0 +1,12 @@
+addons:
+  sonarcloud:
+    organization: "yungen-lu"
+    token:
+      secure: "PQ+w87Kt6ICh0UdC6ffCABgQagIRRhOeGqkjGzqzmHib3qewaHz5LlA+i+t1VA5Nfh+VsmRoLefnq/zdA4dDq0mAKAprUqiIAXfcjvTj+RlkRClwojWMI4NhakJu4DqjsOl7bum8gBXII+rPLbCNy+kcfTiQ8spKj+IwWMGCJumEfNlK9bxZ9xYygqO+mrpgA+U9AKrpvsOZ4ZLCgGO1V8Y5HZsFFA0wbtY+dV0BrE+gyD2fa8GqppomBrCJNXMwhzdSAwNmKnVknrf72fFFUtGAkd+OCoo6xg6AyYgHbwXrRG9iO3qw7MUgmmg0dSchLa2k0G386dbpSArItFqFP4Fjwm8U7Pc0kNIqrD1Y7fb5SkTjk5OpIwJD8l087RgeXKmhbicBXiLrowdz+RdmBpbuyPgHl20t7Afkb6ABCIGwotl77i8E1AYA9x+0R9PH50j1tujhWXeEFAFGbCxuNeuRLotQODmTm7T/n6MxLaBSgm+/WVjCdJik3EOJsbJPg1XelF2fNXm2mHJcZB+vPnQK30tS5LiqmHCcFacAyvTOJKRFBX3wuLJsEfA4NYVbVR7pmXD7BbZrrcAyJUcOvqtbJ8v6p+JJJkYj8yDDTG24DnxGQD1uUlyuaENJ6Hp9eBcCnS1v7poxnEomS4dquDGYtO1M/r33vKY53F16NkU="
+
+script:
+  # Wraps the compilation with the Build Wrapper to generate configuration (used
+  # later by the SonarScanner) into the "bw-output" folder
+  - build-wrapper-linux-x86-64 --out-dir code.yungen.studio/app/build_wrapper_output_directory make clean all # And finally run the SonarCloud analysis - read the "sonar-project.properties"
+  # file to see the specific configuration
+  - sonar-scanner -Dsonar.cfamily.build-wrapper-output=code.yungen.studio/app/build_wrapper_output_directory
