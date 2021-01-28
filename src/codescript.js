@@ -1,9 +1,16 @@
 // import { CodeJar } from 'https://medv.io/codejar/codejar.js';
 // import { withLineNumbers } from "https://medv.io/codejar/linenumbers.js";
-import {CodeJar} from 'codejar';
-import {withLineNumbers} from 'codejar/linenumbers'
-import Toastify from 'toastify-js'
-import 'toastify-js/src/toastify.css'
+// import {axios} from 'axios'
+const axios = require('axios').default;
+import { CodeJar } from 'codejar';
+import { withLineNumbers } from 'codejar/linenumbers';
+import Toastify from 'toastify-js';
+import 'toastify-js/src/toastify.css';
+import hljs from 'highlight.js/lib/core';
+import c from 'highlight.js/lib/languages/c';
+import 'highlight.js/styles/atom-one-dark.css'
+import '../src/style.css'
+hljs.registerLanguage('c', c);
 const highlight = (editor) => {
   editor.textContent = editor.textContent;
   hljs.highlightBlock(editor);
@@ -29,25 +36,26 @@ function getFilename() {
 }
 
 function sendb1Req() {
-  let code = jar.toString();  //用codejar的API將使用者輸入的程式碼給code這個變數
+  let code = jar.toString(); //用codejar的API將使用者輸入的程式碼給code這個變數
   let codeObject = {
-    codeKey: code,  //將code變數放在codeObject這個object裡面
+    codeKey: code, //將code變數放在codeObject這個object裡面
     filenamekey: 'tmpfile.c',
   };
   axios
-    .post('../src/app/postData.php', codeObject)  //傳送POST request給'postData.php'其中包含codeObject
+    .post('../src/app/postData.php', codeObject) //傳送POST request給'postData.php'其中包含codeObject
     .then((res) => {
       console.log(res.data);
-      return axios.get('../src/app/formatOrder.php', {  //接受到伺服器的response後再傳送GET request 給'formatOrder.php'
+      return axios.get('../src/app/formatOrder.php', {
+        //接受到伺服器的response後再傳送GET request 給'formatOrder.php'
         params: { filenamekey: 'tmpfile.c' },
       });
     })
     .then((res) => {
       console.log(res.data);
-      jar.updateCode(res.data);  //將回傳的資料（格式化過的程式碼）更新編輯器內的程式碼
+      jar.updateCode(res.data); //將回傳的資料（格式化過的程式碼）更新編輯器內的程式碼
     })
     .catch((err) => {
-      console.log('ERR');  //假如在其中過程失敗的話在console中輸出'ERR'
+      console.log('ERR'); //假如在其中過程失敗的話在console中輸出'ERR'
       console.log(err);
     });
 }
@@ -99,36 +107,44 @@ function sendb3Req() {
 function toastFunc(Context) {
   for (let i = 0; i < Context.length; i++) {
     console.log(Context[i][2]);
-    toastr[Context[i][2]](Context[i][3], 'Line: ' + Context[i][0]);
+    // toastr[Context[i][2]](Context[i][3], 'Line: ' + Context[i][0]);
+    toastifyOptions.text = concatToastText(Context[i][0],Context[i][3]);
+    toastifyOptions.className = Context[i][2];
+    Toastify(toastifyOptions).showToast();
   }
 }
-toastr.options = {
-  closeButton: true,
-  debug: false,
-  newestOnTop: false,
-  progressBar: false,
-  positionClass: 'toast-top-right',
-  preventDuplicates: false,
-  onclick: null,
-  showDuration: '300',
-  hideDuration: '1000',
-  timeOut: '0',
-  extendedTimeOut: '1000',
-  showEasing: 'swing',
-  hideEasing: 'linear',
-  showMethod: 'fadeIn',
-  hideMethod: 'fadeOut',
-};
-let toastifyOptions = {
-  text: "This is a test toast",
-  duration: 10000,
-  destination: "https://github.com/apvarun/toastify-js",
-  newWindow: true,
-  close: true,
-  gravity: "top", // `top` or `bottom`
-  position: "right", // `left`, `center` or `right`
-  backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-  stopOnFocus: true, // Prevents dismissing of toast on hover
-  onClick: function(){} // Callback after click
+function concatToastText(a,b) {
+  const output = `Line:${a}<br>${b}`;
+  return output;
 }
-//Toastify(toastifyOptions).showToast();
+// toastr.options = {
+//   closeButton: true,
+//   debug: false,
+//   newestOnTop: false,
+//   progressBar: false,
+//   positionClass: 'toast-top-right',
+//   preventDuplicates: false,
+//   onclick: null,
+//   showDuration: '300',
+//   hideDuration: '1000',
+//   timeOut: '0',
+//   extendedTimeOut: '1000',
+//   showEasing: 'swing',
+//   hideEasing: 'linear',
+//   showMethod: 'fadeIn',
+//   hideMethod: 'fadeOut',
+// };
+let toastifyOptions = {
+  text: 'SUCC',
+  duration: -1,
+  className: 'info',
+  // destination: "https://github.com/apvarun/toastify-js",
+  // newWindow: true,
+  close: true,
+  gravity: 'top', // `top` or `bottom`
+  position: 'right', // `left`, `center` or `right`
+  // backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+  stopOnFocus: true, // Prevents dismissing of toast on hover
+  // onClick: function(){} // Callback after click
+};
+// Toastify(toastifyOptions).showToast();

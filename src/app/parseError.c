@@ -33,9 +33,9 @@ int main() {
                 sourceCopy[groupArray[g].rm_eo] =
                     '\0';  //在sourcCopy為原始資料的複製，將groupArray[g].rm_eo（第g個Group的結束位址）（rm_so,rm_eo是regmatch_t
                            //struct的其中兩個參數，紀錄匹配結果開始與結束位址）位址賦予'\0'
-                if (g == 3) {  //對第三個Group進行處理（錯誤類別）轉換為toastr模組能參數
-                    replaceInfo(sourceCopy + groupArray[g].rm_so);
-                }
+                // if (g == 3) {  //對第三個Group進行處理（錯誤類別）轉換為toastr模組能參數
+                //     replaceInfo(sourceCopy + groupArray[g].rm_so);
+                // }
                 printf("%s#", sourceCopy + groupArray[g].rm_so);  // sourceCopy 位址加上groupArray[g].rm_so（開始位址）等於第g個Group的字串起始位址
             }
             printf("?");

@@ -19,7 +19,9 @@
   },
   "homepage": "https://github.com/yungen-lu/Code-Prettifyer#readme",
   "dependencies": {
+    "axios": "^0.21.1",
     "codejar": "^3.2.3",
+    "highlight.js": "^10.5.0",
     "toastify-js": "^1.9.3"
   },
   "devDependencies": {

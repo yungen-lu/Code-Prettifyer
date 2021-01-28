@@ -9,4 +9,4 @@ script:
   # later by the SonarScanner) into the "bw-output" folder
   - build-wrapper-linux-x86-64 --out-dir src/app/build_wrapper_output_directory make clean all # And finally run the SonarCloud analysis - read the "sonar-project.properties"
   # file to see the specific configuration
-  - sonar-scanner -Dsonar.cfamily.build-wrapper-output=src.yungen.studio/app/build_wrapper_output_directory
+  - sonar-scanner -Dsonar.cfamily.build-wrapper-output=src/app/build_wrapper_output_directory
