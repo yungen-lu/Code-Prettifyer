@@ -2,11 +2,25 @@ addons:
   sonarcloud:
     organization: "yungen-lu"
     token: 
-      secure: "JWv4CgeFYX1fWf/V6KzYLBADpxXsFAjpPnwYeIxuuKX0rwCChqgwP9NfupzsS1QRdEJFuKlgbwH/5VAKNuq11LWfL6s8i0po3Cf34Is90cT3fp5iQqDd2nzFvl/fZcsBtpuj6xTm+mJSJ4Ja1IANA+/9NoqwXytsL1rIWLxMkiYh65XAPh9Sspgex6h/M9MkWK88NUYVMTpgFAhsQqwBnpx7rHH268+JP+TXDaoNNXsG191/eDTUjR7KYxiXqonOcOQaumEhGA6HkCd0MblOlOuyhg44PiM5lWRfYKgNW7CN+cVhyv5ADCPjMXkGNLFsAUuzI8emnQV5h4SOWXO0pPRDBK5QNaOYhmxESdoz1F9caubNRvswiBcecmie3emE5i36fLRv5gy/aItYV+h0JGaEJHvP51smnt1fbdu7hYW1EKBSDQDfPqB3Eq8NUOAX3L8fptreS22O8AQ1lUHIqEgIam5hldaBe2yZVnsYoU4W1ifYuLNvXswbntA108TvwZyjWGrGDWbuVcRow1SgY0gUOX9jflZp8QAAHR1MWVTbjUo+P4iCTFNhHXe3CeX46KB+Pom2r8fQ+FQMi3Jir5Cjjh0agxiJ8HgRCB8ptMfcGqjOWLukvzBm9QEbOTvS0+GdgG4Qs6jebAu/RzH+ZX+cqMdEMupXMG8Z25+pWNI="
+      secure: "uwzLYeeVVctf9VL9t+kX3XVtVcDivY7oteKvIOY0LpEuwl4GQtS6TcRSKmQ6M1rV/FAnVI42l/X32d6da74xVowGcgqZ3Eh4JJY7k5SJzJ2CHof7q8mGrMneY4HPPbyl/B+OTQRHosa+TCYR1hOA0nRa2S2Gy/wAyd1rb1KYWNHGDZ4joX5i4us2H2lGhunCthJJtD2MPwY1EsA0wTZenodYwWNDmnfviTAdI2iLmVa3J05VnW9t67xxKgWMiN3BtV0XxkjDTPojue9ipzeGwkRPX6moOZjL9st9caH1HyEJeJ+bjBonfBTt4vvtVKT/hmkebAdwoAONkY2Pm2xlXcRYPuob5f4+pa0+JsQH68emu2VmGgsCtKV87w/p3zQYN2PKloLT7AqCwBuZ4jle5jIjPkMTR4N8jzUNy+0MM35CwTPr4OOFJYKyUoq509cmwTgojRF8ahQMl1k2fVNvfyskXfBIfBzXBYFObrMtEPQKkFXZNsTDcBLpfI0TlmkBH7XcnCg+XwaxC7tkae5tpH52yCkzA/4x6HqE7DoQt4eWTzC4wiPVo5Rr6gBGXITZja070SZFox8QJ+HGmQmftRT8j4SomczCOwuhsBdJzXqRBUm9Wxj4eO7gVJhvi8SWk7ropxy4GKjZ8FnTlUxnbtuDqI1JFZp3T0jTyI7jc0Y="
 
+# matrix:
+#   include:
+#     - language: c
+#       before_script:
+#         - cd src/app/c
+#       script:
+#         - build-wrapper-linux-x86-64 --out-dir build_wrapper_output_directory make clean all
+#         - sonar-scanner -Dsonar.cfamily.build-wrapper-output=build_wrapper_output_directory
+#     - language: php 
+#       before_script:
+#         - cd src/app/php
+#       script:
+#         - sonar-scanner
+#     - language: javascript
 script:
   # Wraps the compilation with the Build Wrapper to generate configuration (used
   # later by the SonarScanner) into the "bw-output" folder
-  - build-wrapper-linux-x86-64 --out-dir src/app/build_wrapper_output_directory make clean all # And finally run the SonarCloud analysis - read the "sonar-project.properties"
+  - build-wrapper-linux-x86-64 --out-dir src/app/c/build_wrapper_output_directory make clean all # And finally run the SonarCloud analysis - read the "sonar-project.properties"
   # file to see the specific configuration
-  - sonar-scanner -Dsonar.cfamily.build-wrapper-output=src/app/build_wrapper_output_directory
+  - sonar-scanner -Dsonar.cfamily.build-wrapper-output=src/app/c/build_wrapper_output_directory

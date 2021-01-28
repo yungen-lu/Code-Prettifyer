@@ -1,6 +1,6 @@
-src/app/formatBracket
-src/app/parseError
-src/app/removeSpace
+src/app/c/formatBracket
+src/app/c/parseError
+src/app/c/removeSpace
 # Logs
 logs
 *.log
