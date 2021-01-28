@@ -7,6 +7,6 @@ addons:
 script:
   # Wraps the compilation with the Build Wrapper to generate configuration (used
   # later by the SonarScanner) into the "bw-output" folder
-  - build-wrapper-linux-x86-64 --out-dir code.yungen.studio/app/build_wrapper_output_directory make clean all # And finally run the SonarCloud analysis - read the "sonar-project.properties"
+  - build-wrapper-linux-x86-64 --out-dir src/app/build_wrapper_output_directory make clean all # And finally run the SonarCloud analysis - read the "sonar-project.properties"
   # file to see the specific configuration
-  - sonar-scanner -Dsonar.cfamily.build-wrapper-output=code.yungen.studio/app/build_wrapper_output_directory
+  - sonar-scanner -Dsonar.cfamily.build-wrapper-output=src.yungen.studio/app/build_wrapper_output_directory

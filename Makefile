@@ -1,5 +1,5 @@
 CC=gcc
-SOURCEDIR = code.yungen.studio/app
+SOURCEDIR = src/app
 SOURCES = $(wildcard $(SOURCEDIR)/*.c)
 
 PROGS = $(patsubst %.c,%,$(SOURCES))

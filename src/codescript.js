@@ -1,6 +1,9 @@
-import { CodeJar } from 'https://medv.io/codejar/codejar.js';
-import { withLineNumbers } from "https://medv.io/codejar/linenumbers.js";
-
+// import { CodeJar } from 'https://medv.io/codejar/codejar.js';
+// import { withLineNumbers } from "https://medv.io/codejar/linenumbers.js";
+import {CodeJar} from 'codejar';
+import {withLineNumbers} from 'codejar/linenumbers'
+import Toastify from 'toastify-js'
+import 'toastify-js/src/toastify.css'
 const highlight = (editor) => {
   editor.textContent = editor.textContent;
   hljs.highlightBlock(editor);
@@ -32,10 +35,10 @@ function sendb1Req() {
     filenamekey: 'tmpfile.c',
   };
   axios
-    .post('postData.php', codeObject)  //傳送POST request給'postData.php'其中包含codeObject
+    .post('../src/app/postData.php', codeObject)  //傳送POST request給'postData.php'其中包含codeObject
     .then((res) => {
       console.log(res.data);
-      return axios.get('formatOrder.php', {  //接受到伺服器的response後再傳送GET request 給'formatOrder.php'
+      return axios.get('../src/app/formatOrder.php', {  //接受到伺服器的response後再傳送GET request 給'formatOrder.php'
         params: { filenamekey: 'tmpfile.c' },
       });
     })
@@ -55,10 +58,10 @@ function sendb2Req() {
     filenamekey: 'tmpfile.c',
   };
   axios
-    .post('postData.php', codeObject)
+    .post('../src/app/postData.php', codeObject)
     .then((res) => {
       console.log(res.data);
-      return axios.get('excuteOrder.php', {
+      return axios.get('../src/app/excuteOrder.php', {
         params: { filenamekey: 'tmpfile.c' }, // todo
       });
     })
@@ -76,11 +79,11 @@ function sendb3Req() {
   const formData = new FormData();
   formData.append('filesubmit', formElement);
   axios
-    .post('uploadData.php', formData)
+    .post('../src/app/uploadData.php', formData)
     .then((res) => {
       console.log(res.data);
       let filename = getFilename();
-      return axios.get(`excuteOrder.php`, {
+      return axios.get(`../src/app/excuteOrder.php`, {
         params: { filenamekey: filename },
       });
     })
@@ -116,3 +119,16 @@ toastr.options = {
   showMethod: 'fadeIn',
   hideMethod: 'fadeOut',
 };
+let toastifyOptions = {
+  text: "This is a test toast",
+  duration: 10000,
+  destination: "https://github.com/apvarun/toastify-js",
+  newWindow: true,
+  close: true,
+  gravity: "top", // `top` or `bottom`
+  position: "right", // `left`, `center` or `right`
+  backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+  stopOnFocus: true, // Prevents dismissing of toast on hover
+  onClick: function(){} // Callback after click
+}
+//Toastify(toastifyOptions).showToast();
