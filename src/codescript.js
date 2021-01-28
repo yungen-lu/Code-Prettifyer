@@ -42,10 +42,10 @@ function sendb1Req() {
     filenamekey: 'tmpfile.c',
   };
   axios
-    .post('../src/app/postData.php', codeObject) //傳送POST request給'postData.php'其中包含codeObject
+    .post('../src/app/php/postData.php', codeObject) //傳送POST request給'postData.php'其中包含codeObject
     .then((res) => {
       console.log(res.data);
-      return axios.get('../src/app/formatOrder.php', {
+      return axios.get('../src/app/php/formatOrder.php', {
         //接受到伺服器的response後再傳送GET request 給'formatOrder.php'
         params: { filenamekey: 'tmpfile.c' },
       });
@@ -66,10 +66,10 @@ function sendb2Req() {
     filenamekey: 'tmpfile.c',
   };
   axios
-    .post('../src/app/postData.php', codeObject)
+    .post('../src/app/php/postData.php', codeObject)
     .then((res) => {
       console.log(res.data);
-      return axios.get('../src/app/excuteOrder.php', {
+      return axios.get('../src/app/php/excuteOrder.php', {
         params: { filenamekey: 'tmpfile.c' }, // todo
       });
     })
@@ -87,11 +87,11 @@ function sendb3Req() {
   const formData = new FormData();
   formData.append('filesubmit', formElement);
   axios
-    .post('../src/app/uploadData.php', formData)
+    .post('../src/app/php/uploadData.php', formData)
     .then((res) => {
       console.log(res.data);
       let filename = getFilename();
-      return axios.get(`../src/app/excuteOrder.php`, {
+      return axios.get(`../src/app/php/excuteOrder.php`, {
         params: { filenamekey: filename },
       });
     })
@@ -117,23 +117,6 @@ function concatToastText(a,b) {
   const output = `Line:${a}<br>${b}`;
   return output;
 }
-// toastr.options = {
-//   closeButton: true,
-//   debug: false,
-//   newestOnTop: false,
-//   progressBar: false,
-//   positionClass: 'toast-top-right',
-//   preventDuplicates: false,
-//   onclick: null,
-//   showDuration: '300',
-//   hideDuration: '1000',
-//   timeOut: '0',
-//   extendedTimeOut: '1000',
-//   showEasing: 'swing',
-//   hideEasing: 'linear',
-//   showMethod: 'fadeIn',
-//   hideMethod: 'fadeOut',
-// };
 let toastifyOptions = {
   text: 'SUCC',
   duration: -1,

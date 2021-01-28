@@ -4,7 +4,7 @@
 #include <string.h>
 
 void replaceNewline(char **input, char **output);
-void addIndent(char **output, int *indentLevelPtr);
+void addIndent(char **output, const int *indentLevelPtr);
 void formatBracket(char **input, char **output, int *indentLevelPtr);
 int main(int argc, char **argv) {
     FILE *fptr;
@@ -19,6 +19,7 @@ int main(int argc, char **argv) {
     while (fgets(input, sizeof(char) * 8192, fptr) != NULL) {
         strcat(concat, input);
     }
+    fclose(fptr);
     char *outputPtr = output;
     char *inputPtr = concat;
     int indentLevel = 0;
@@ -35,7 +36,7 @@ void replaceNewline(char **input, char **output) {
         *(*output)++ = '\n';  // todo
     }
 }
-void addIndent(char **output, int *indentlevelPtr) {
+void addIndent(char **output, const int *indentlevelPtr) {
     for (int i = 0; i < *indentlevelPtr; i++) {
         *(*output)++ = ' ';
         *(*output)++ = ' ';
