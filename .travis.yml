@@ -20,6 +20,8 @@ addons:
 #       script:
 #         - sonar-scanner
 #     - language: javascript
+before_install:
+  - nvm install 15
 script:
   # Wraps the compilation with the Build Wrapper to generate configuration (used
   # later by the SonarScanner) into the "bw-output" folder
