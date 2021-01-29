@@ -45,13 +45,18 @@ void addIndent(char **output, const int *indentlevelPtr) {
 }
 void formatBracket(char **input, char **output, int(*indentLevelPtr), int firstCharCheck) {
     while (*(*input)) {
+        if (firstCharCheck != 1) {
+            *(*output)++ = *(*input)++;
+            firstCharCheck = 1;
+            continue;
+        }
         if (*(*input) == '{') {
-            if ((firstCharCheck != 1 || *(*input - 1) == '\'') || *(*input) + 1 == '\'') {
+            if (*(*input - 1) == '\'' || *(*input) + 1 == '\'') {
                 *(*output)++ = *(*input)++;
                 firstCharCheck = 1;
                 continue;
             }
-            if (firstCharCheck != 1 || (*(*input - 1)) != '\n') {
+            if ((*(*input - 1)) != '\n') {
                 *(*output)++ = '\n';  // todo
             }
             addIndent(output, indentLevelPtr);  //根據indentlevel進行縮排處理
@@ -59,17 +64,17 @@ void formatBracket(char **input, char **output, int(*indentLevelPtr), int firstC
             firstCharCheck = 1;
             replaceNewline(input, output);
             (*indentLevelPtr)++;  // indentlevel + 1
-            formatBracket(input, output, indentLevelPtr,firstCharCheck);
+            formatBracket(input, output, indentLevelPtr, firstCharCheck);
         }
 
         if (*(*input) == '}') {
-            if ((firstCharCheck != 1 || *(*input - 1) == '\'') || *(*input) + 1 == '\'') {
+            if ((*(*input - 1) == '\'') || *(*input) + 1 == '\'') {
                 *(*output)++ = *(*input)++;
                 firstCharCheck = 1;
                 continue;
             }
             (*indentLevelPtr)--;  // indentlevel - 1
-            if (firstCharCheck != 1 || (*(*input - 1)) != '\n') {
+            if ((*(*input - 1)) != '\n') {
                 *(*output)++ = '\n';  // todo
             }
             addIndent(output, indentLevelPtr);
@@ -78,7 +83,7 @@ void formatBracket(char **input, char **output, int(*indentLevelPtr), int firstC
             replaceNewline(input, output);
             return;
         }
-        if (firstCharCheck != 1 || (*((*output) - 1) == '\n')) {
+        if (*((*output) - 1) == '\n') {
             addIndent(output, indentLevelPtr);
         }
         if (*(*input) == ';' && *(*input + 1) != '\n') {
