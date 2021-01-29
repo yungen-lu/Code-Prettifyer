@@ -41,10 +41,8 @@ char *removeSpace(const char *string) {
         *qtr++ = *ptr++;  //遇到正常字元則依序寫入
         firstCharCheck = 1;
     }
-    if (firstCharCheck == 1) {  //防止out of bound memory access
-        if (*(ptr - 1) == ' ') {
-            qtr--;
-        }
+    if (firstCharCheck == 1 && (*(ptr - 1) == ' ') && (ptr - string) > 1) {  //防止out of bound memory access
+        qtr--;
     }
     *qtr = '\0';
     return out;

@@ -5,7 +5,7 @@
 
 void replaceNewline(char **input, char **output);
 void addIndent(char **output, const int *indentLevelPtr);
-void formatBracket(char **input, char **output, int *indentLevelPtr);
+void formatBracket(char **input, char **output, int *indentLevelPtr, int firstCharCheck);
 int main(int argc, char **argv) {
     FILE *fptr;
     if (argc == 2) {
@@ -24,8 +24,9 @@ int main(int argc, char **argv) {
     char *inputPtr = concat;
     int indentLevel = 0;
     int *indentlevelPtr = &indentLevel;
+    int firstCheckChar = 0;
     while (*inputPtr) {
-        formatBracket(&inputPtr, &outputPtr, indentlevelPtr);
+        formatBracket(&inputPtr, &outputPtr, indentlevelPtr, firstCheckChar);
         *outputPtr++ = *inputPtr++;
     }
     *outputPtr = '\0';
@@ -42,50 +43,57 @@ void addIndent(char **output, const int *indentlevelPtr) {
         *(*output)++ = ' ';
     }
 }
-void formatBracket(char **input, char **output, int(*indentLevelPtr)) {
+void formatBracket(char **input, char **output, int(*indentLevelPtr), int firstCharCheck) {
     while (*(*input)) {
         if (*(*input) == '{') {
-            if (*(*input - 1) == '\'' || *(*input) + 1 == '\'') {
+            if ((firstCharCheck != 1 || *(*input - 1) == '\'') || *(*input) + 1 == '\'') {
                 *(*output)++ = *(*input)++;
+                firstCharCheck = 1;
                 continue;
             }
-            if ((*(*input - 1)) != '\n') {
+            if (firstCharCheck != 1 || (*(*input - 1)) != '\n') {
                 *(*output)++ = '\n';  // todo
             }
             addIndent(output, indentLevelPtr);  //根據indentlevel進行縮排處理
             *(*output)++ = *(*input)++;
+            firstCharCheck = 1;
             replaceNewline(input, output);
             (*indentLevelPtr)++;  // indentlevel + 1
-            formatBracket(input, output, indentLevelPtr);
+            formatBracket(input, output, indentLevelPtr,firstCharCheck);
         }
 
         if (*(*input) == '}') {
-            if (*(*input - 1) == '\'' || *(*input) + 1 == '\'') {
+            if ((firstCharCheck != 1 || *(*input - 1) == '\'') || *(*input) + 1 == '\'') {
                 *(*output)++ = *(*input)++;
+                firstCharCheck = 1;
                 continue;
             }
             (*indentLevelPtr)--;  // indentlevel - 1
-            if ((*(*input - 1)) != '\n') {
+            if (firstCharCheck != 1 || (*(*input - 1)) != '\n') {
                 *(*output)++ = '\n';  // todo
             }
             addIndent(output, indentLevelPtr);
             *(*output)++ = *(*input)++;
+            firstCharCheck = 1;
             replaceNewline(input, output);
             return;
         }
-        if (*((*output) - 1) == '\n') {
+        if (firstCharCheck != 1 || (*((*output) - 1) == '\n')) {
             addIndent(output, indentLevelPtr);
         }
         if (*(*input) == ';' && *(*input + 1) != '\n') {
             if (*(*input - 1) == ';' || *(*input) + 1 == ';') {
                 *(*output)++ = *(*input)++;
+                firstCharCheck = 1;
                 continue;
             }
             *(*output)++ = *(*input)++;
+            firstCharCheck = 1;
             *(*output)++ = '\n';
             continue;
         }
 
         *(*output)++ = *(*input)++;
+        firstCharCheck = 1;
     }
 }

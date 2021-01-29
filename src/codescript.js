@@ -9,7 +9,7 @@ import 'toastify-js/src/toastify.css';
 import hljs from 'highlight.js/lib/core';
 import c from 'highlight.js/lib/languages/c';
 import 'highlight.js/styles/atom-one-dark.css'
-import '../src/style.css'
+import '../src/css/style.css'
 hljs.registerLanguage('c', c);
 const highlight = (editor) => {
   editor.textContent = editor.textContent;
