@@ -37,11 +37,12 @@ char *removeSpace(const char *string) {
         }
         *qtr++ = *ptr++;  //遇到正常字元則依序寫入
     }
-    if ((*(ptr - 1) == ' ') && qtr != out) {  //防止out of bound memory access
-        qtr--;
+    if (qtr != out) {
+        if (*(ptr - 1) == ' ') {  //防止out of bound memory access
+            qtr--;
+        }
     }
     *qtr = '\0';
-    printf("%ld\n", ptr - string);
     return out;
 }
 void replaceTab(const char *string) {

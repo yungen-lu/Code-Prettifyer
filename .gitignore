@@ -85,7 +85,7 @@ out
 
 # Nuxt.js build / generate output
 .nuxt
-dist
+# dist
 
 # Gatsby files
 .cache/
@@ -120,3 +120,8 @@ dist
 src/app/.nvimlog
 src/app/c/.nvimlog
 .nvimlog
+dist/main.js
+dist/main.css
+dist/app/c/removeSpace
+dist/app/c/formatBracket
+dist/app/c/parseError

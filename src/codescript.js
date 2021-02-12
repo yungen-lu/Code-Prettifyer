@@ -42,10 +42,10 @@ function sendb1Req() {
     filenamekey: 'tmpfile.c',
   };
   axios
-    .post('../src/app/php/postData.php', codeObject) //傳送POST request給'postData.php'其中包含codeObject
+    .post('app/php/postData.php', codeObject) //傳送POST request給'postData.php'其中包含codeObject
     .then((res) => {
       console.log(res.data);
-      return axios.get('../src/app/php/formatOrder.php', {
+      return axios.get('app/php/formatOrder.php', {
         //接受到伺服器的response後再傳送GET request 給'formatOrder.php'
         params: { filenamekey: 'tmpfile.c' },
       });
@@ -66,10 +66,10 @@ function sendb2Req() {
     filenamekey: 'tmpfile.c',
   };
   axios
-    .post('../src/app/php/postData.php', codeObject)
+    .post('app/php/postData.php', codeObject)
     .then((res) => {
       console.log(res.data);
-      return axios.get('../src/app/php/excuteOrder.php', {
+      return axios.get('app/php/excuteOrder.php', {
         params: { filenamekey: 'tmpfile.c' }, // todo
       });
     })
@@ -87,11 +87,11 @@ function sendb3Req() {
   const formData = new FormData();
   formData.append('filesubmit', formElement);
   axios
-    .post('../src/app/php/uploadData.php', formData)
+    .post('app/php/uploadData.php', formData)
     .then((res) => {
       console.log(res.data);
       let filename = getFilename();
-      return axios.get(`../src/app/php/excuteOrder.php`, {
+      return axios.get(`app/php/excuteOrder.php`, {
         params: { filenamekey: filename },
       });
     })
