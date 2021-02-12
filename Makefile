@@ -1,5 +1,5 @@
 CC=gcc
-SOURCEDIR = src/app/c
+SOURCEDIR = dist/app/c
 SOURCES = $(wildcard $(SOURCEDIR)/*.c)
 
 PROGS = $(patsubst %.c,%,$(SOURCES))
