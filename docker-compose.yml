@@ -21,7 +21,7 @@ services:
       - ./Dockerfiles/traefik/traefik_dynamic.toml:/traefik_dynamic.toml
     environment:
       - NAMECOM_USERNAME=yungen
-      - NAMECOM_API_TOKEN=447178b1dfa5b027d6998643296ca2941dc85ac4
+      - NAMECOM_API_TOKEN=436de78d9963c577da9aca62cb1c032f33fe7034
 
     networks: 
       - web
