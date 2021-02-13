@@ -13,7 +13,9 @@
 [certificatesResolvers.lets-encrypt.acme]
   email = "test@youremail.com"
   storage = "ce/acme.json"
-  [certificatesResolvers.lets-encrypt.acme.tlsChallenge]
+  [certificatesResolvers.lets-encrypt.acme.dnsChallenge]
+  provider = "namedotcom"
+    delayBeforeCheck = 0
 
 [providers.docker]
   watch = true

@@ -19,6 +19,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./Dockerfiles/traefik/traefik.toml:/traefik.toml:ro
       - ./Dockerfiles/traefik/traefik_dynamic.toml:/traefik_dynamic.toml
+    environment:
+      - NAMECOM_USERNAME=yungen
+      - NAMECOM_API_TOKEN=447178b1dfa5b027d6998643296ca2941dc85ac4
 
     networks: 
       - web
