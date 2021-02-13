@@ -3,5 +3,7 @@ COPY src /src
 RUN mkdir dist
 COPY package*.json ./
 COPY webpack.config.js ./
+RUN apk update
+RUN apk upgrade
 RUN npm install
-RUN npm run build
+CMD ["npm","run","build"]
