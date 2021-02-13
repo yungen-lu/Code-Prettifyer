@@ -26,6 +26,7 @@ services:
   nginx:
     image: nginx:alpine
     labels:
+      - traefik.enable=true
       - traefik.http.routers.nginx.rule=Host(`blog.yungen.studio`,`code.yungen.studio`)
       - traefik.http.routers.nginx.tls=true
       - traefik.http.routers.nginx.tls.certresolver=lets-encrypt
