@@ -26,9 +26,11 @@ services:
   nginx:
     image: nginx:alpine
     labels:
-      - traefik.http.routers.nginx.rule=Host(`blog.yungen.studio`,`code.yungen.studio`)
+      - traefik.http.routers.nginx.rule=Host(`yungen.studio`)
       - traefik.http.routers.nginx.tls=true
       - traefik.http.routers.nginx.tls.certresolver=lets-encrypt
+      - traefik.http.routers.nginx.tls.domains[0].main=yungen.studio
+      - traefik.http.routers.nginx.tls.domains[0].sans=*.yungen.studio
       - traefik.http.services.nginx.loadbalancer.server.port=80
       - traefik.http.middlewares.gzip.compress=true
       - traefik.http.routers.nginx.middlewares=gzip
