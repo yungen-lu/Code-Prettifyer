@@ -9,7 +9,14 @@ if (isset($_GET)) {
     } else {
         $pattern = "/\w+\.[a-z]+/";
         $filename = $_GET['filenamekey'];
-        $cmd = 'cppcheck '.'--enable=all '.'--suppress=missingIncludeSystem '."../upload/$filename".' 2>&1 '.'| ../c/parseError';
+        $execname='cppcheck';
+        $arg1 = '--enable=all';
+        $arg2 = '--suppress=missingIncludeSystem ';
+        $arg3 = '2>&1';
+        $arg4 = '| ../c/parseError';
+        $filelocation = "../upload/$filename";
+        $cmd = $execname.' '.$arg1.' '.$arg2.' '.$filelocation.' '.$arg3.' '.$arg4;
+        // $cmd = 'cppcheck '.'--enable=all '.'--suppress=missingIncludeSystem '."../upload/$filename".' 2>&1 '.'| ../c/parseError';
         if (preg_match($pattern, $filename)) {  //add regex to prevent injection attack
             $output = shell_exec($cmd);
             $arrayOfGroup=explode("#?", $output);

@@ -11,7 +11,13 @@ if (isset($_GET)) {
         echo "Opps...";
     } else {
         $pattern = "/\w+\.[a-z]+/";
-        $cmd = "cat "."../upload/$filename "."| "."../c/removeSpace "."| "."../c/formatBracket";
+        $execname = 'cat';
+        $arg1 ="../upload/$filename";
+        $filelocation = "../upload/$filename ";
+        $arg2 = '../c/removeSpace ';
+        $arg3 = '../c/formatBracket';
+        $cmd = $execname.' '.$arg1.' '.'| '.$arg2.' '.'| '.$arg3;
+        // $cmd = "cat "."../upload/$filename "."| "."../c/removeSpace "."| "."../c/formatBracket";
         if (preg_match($pattern, $filename)) {  //add regex to prevent injection attack
             $output = shell_exec($cmd);
             echo $output;
