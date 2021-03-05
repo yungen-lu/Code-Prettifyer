@@ -17,11 +17,11 @@ services:
       - "443:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./Dockerfiles/traefik/traefik.toml:/traefik.toml:ro
-      - ./Dockerfiles/traefik/traefik_dynamic.toml:/traefik_dynamic.toml
+      - ./Dockerfiles/traefik/traefik.yaml:/traefik.yaml:ro
+      - ./Dockerfiles/traefik/traefik_dynamic.yaml:/traefik_dynamic.yaml
     environment:
-      - NAMECOM_USERNAME=yungen
-      - NAMECOM_API_TOKEN=436de78d9963c577da9aca62cb1c032f33fe7034
+      - NAMECOM_USERNAME=${NAMECOM_USERNAME}
+      - NAMECOM_API_TOKEN=${NAMECOM_API_TOKEN}
 
     networks: 
       - web
@@ -30,14 +30,15 @@ services:
     image: nginx:alpine
     labels:
       - traefik.enable=true
-      - traefik.http.routers.nginx.rule=Host(`blog.yungen.studio`,`code.yungen.studio`)
+      - traefik.http.routers.nginx.rule=Host(`code.yungen.studio`)
       - traefik.http.routers.nginx.tls=true
-      - traefik.http.routers.nginx.tls.certresolver=lets-encrypt
+      # - traefik.http.routers.nginx.tls.certresolver=lets-encrypt
       # - traefik.http.routers.nginx.tls.domains[0].main=yungen.studio
       # - traefik.http.routers.nginx.tls.domains[0].sans=*.yungen.studio
       - traefik.http.services.nginx.loadbalancer.server.port=80
-      - traefik.http.middlewares.gzip.compress=true
+      # - traefik.http.middlewares.gzip.compress=true
       - traefik.http.routers.nginx.middlewares=gzip
+      - traefik.http.routers.nginx.entrypoints=websecure
     networks:
       - internal  #確認跟php在同一個網路裡
       - web
@@ -46,23 +47,26 @@ services:
       - ./Dockerfiles/nginx/nginxconfig.io:/etc/nginx/nginxconfig.io
       - ./Dockerfiles/nginx/sites-enabled:/etc/nginx/sites-enabled
       - ./dist:/var/www/code.yungen.studio  #確認路徑與php的一樣
-      - ./blog.yungen.studio:/var/www/blog.yungen.studio
+      # - ./blog.yungen.studio:/var/www/blog.yungen.studio
       - ./nginxlog/:/var/log/nginx/
 
     container_name: nginx
 
   portainer:
     image: portainer/portainer-ce:latest
+    container_name: portainer
     command: -H unix:///var/run/docker.sock
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
     labels:
     # Frontend
-      - traefik.http.routers.frontend.rule=Host(`portainer-code.yungen.studio`)
-      - traefik.http.services.frontend.loadbalancer.server.port=9000
-      - traefik.http.routers.frontend.service=frontend
-      - traefik.http.routers.frontend.tls.certresolver=lets-encrypt
+      - traefik.http.routers.portainer.rule=Host(`portainer-code.yungen.studio`)
+      - traefik.http.services.portainer.loadbalancer.server.port=9000
+      # - traefik.http.routers.portainer.service=portainer
+      # - traefik.http.routers.portainer.tls.certresolver=lets-encrypt
+      - traefik.http.routers.portainer.tls.true
+      - traefik.http.routers.portainer.entrypoints=websecure
     networks:
       - internal
       - web
