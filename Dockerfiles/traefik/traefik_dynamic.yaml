@@ -4,11 +4,6 @@ http:
       basicAuth:
         users:
           - 'admin:$apr1$/aLtrVMz$Pmuhm6B3z/3VliBV2ycLy0'
-    redirect-to-https:
-      redirectScheme:
-        scheme: https
-    gzip:
-      compress: {}
   routers:
     api:
       rule: Host(`monitor-code.yungen.studio`)
@@ -17,19 +12,5 @@ http:
       middlewares:
         - simpleAuth
       service: api@internal
-      tls: {}
-      # tls:
-      #   certResolver: lets-encrypt
-    wildcard-certs:
       tls:
         certResolver: lets-encrypt
-        domains:
-          - main: 'yungen.studio'
-            sans: 
-              - '*.yungen.studio'
-    http-catchall:
-      rule: HostRegexp(`{host:.+}`)
-      entryPoints:
-        - web
-      middlewares:
-        - redirect-to-https

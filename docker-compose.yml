@@ -32,13 +32,13 @@ services:
       - traefik.enable=true
       - traefik.http.routers.nginx.rule=Host(`code.yungen.studio`)
       - traefik.http.routers.nginx.tls=true
-      # - traefik.http.routers.nginx.tls.certresolver=lets-encrypt
+      - traefik.http.routers.nginx.tls.certresolver=lets-encrypt
       # - traefik.http.routers.nginx.tls.domains[0].main=yungen.studio
       # - traefik.http.routers.nginx.tls.domains[0].sans=*.yungen.studio
       - traefik.http.services.nginx.loadbalancer.server.port=80
-      # - traefik.http.middlewares.gzip.compress=true
+      - traefik.http.middlewares.gzip.compress=true
       - traefik.http.routers.nginx.middlewares=gzip
-      - traefik.http.routers.nginx.entrypoints=websecure
+      # - traefik.http.routers.nginx.entrypoints=websecure
     networks:
       - internal  #確認跟php在同一個網路裡
       - web
@@ -63,8 +63,8 @@ services:
     # Frontend
       - traefik.http.routers.portainer.rule=Host(`portainer-code.yungen.studio`)
       - traefik.http.services.portainer.loadbalancer.server.port=9000
-      # - traefik.http.routers.portainer.service=portainer
-      # - traefik.http.routers.portainer.tls.certresolver=lets-encrypt
+      - traefik.http.routers.portainer.service=portainer
+      - traefik.http.routers.portainer.tls.certresolver=lets-encrypt
       - traefik.http.routers.portainer.tls.true
       - traefik.http.routers.portainer.entrypoints=websecure
     networks:
