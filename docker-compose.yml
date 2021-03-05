@@ -54,7 +54,7 @@ services:
 
   portainer:
     image: portainer/portainer-ce:latest
-    container_name: portainer
+    # container_name: portainer
     command: -H unix:///var/run/docker.sock
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -65,8 +65,8 @@ services:
       - traefik.http.services.frontend.loadbalancer.server.port=9000
       - traefik.http.routers.frontend.service=frontend
       - traefik.http.routers.frontend.tls.certresolver=lets-encrypt
-      - traefik.http.routers.frontend.tls.true
-      - traefik.http.routers.frontend.entrypoints=websecure
+      # - traefik.http.routers.frontend.tls.true
+      # - traefik.http.routers.frontend.entrypoints=websecure
     networks:
       - internal
       - web
